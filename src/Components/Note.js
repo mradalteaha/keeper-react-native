@@ -1,15 +1,25 @@
 import React from "react";
-import { View ,StyleSheet ,Text} from 'react-native'
+import { SafeAreaView ,StyleSheet ,Text} from 'react-native'
 import NoteButton from "./NoteButton";
 
 function Note(props) {
+
+  function handleClick() {
+
+    props.onDelete(props.id);
+  }
   return (
-    <View style ={style.note}>
+    <SafeAreaView style ={style.note}>
     <Text style ={style.title}>{props.title}</Text>
     <Text style ={style.content}>{props.content}</Text>
-    <NoteButton/>
 
-    </View>
+    <SafeAreaView>
+
+    <NoteButton onPress={handleClick}/>
+    </SafeAreaView>
+    
+
+    </SafeAreaView>
   );
 }
 

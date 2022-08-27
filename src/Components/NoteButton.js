@@ -11,7 +11,7 @@ const NoteButton = ({ onPress, title }) => (
 
 
   const styles = StyleSheet.create({
-    // ...
+   
     appButtonContainer: {
       elevation: 8,
       backgroundColor: "#009688",

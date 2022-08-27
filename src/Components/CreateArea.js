@@ -1,68 +1,65 @@
 import React, { useState } from "react";
-import AddIcon from "@material-ui/icons/Add";
-import Fab from "@material-ui/core/Fab";
-import Zoom from "@material-ui/core/Zoom";
+import { SafeAreaView, StyleSheet, TextInput ,View} from "react-native";
+import MyButton from './MyButton'
+
 
 function CreateArea(props) {
-  const [isExpanded, setExpanded] = useState(false);
+  const [NoteTitle, onChangeTitle] = useState("Note Title");
+  const [NoteContent, onChangeContent] = useState("Note Content");
 
-  const [note, setNote] = useState({
-    title: "",
-    content: ""
-  });
+  function submitNote() {
+    let newNote= {
+      title : NoteTitle , 
+      content : NoteContent ,
+    }
 
-  function handleChange(event) {
-    const { name, value } = event.target;
-
-    setNote(prevNote => {
-      return {
-        ...prevNote,
-        [name]: value
-      };
-    });
-  }
-
-  function submitNote(event) {
-    props.onAdd(note);
-    setNote({
-      title: "",
-      content: ""
-    });
-    event.preventDefault();
-  }
-
-  function expand() {
-    setExpanded(true);
+    props.modaltriggerNewNote(newNote);
+    
   }
 
   return (
-    <div>
-      <form className="create-note">
-        {isExpanded && (
-          <input
-            name="title"
-            onChange={handleChange}
-            value={note.title}
-            placeholder="Title"
-          />
-        )}
+    <SafeAreaView >
+    <TextInput
+    maxLength={25}
+      style={styles.inputTitle}
+      onChangeText={onChangeTitle}
+      value={NoteTitle}
+    />
 
-        <textarea
-          name="content"
-          onClick={expand}
-          onChange={handleChange}
-          value={note.content}
-          placeholder="Take a note..."
-          rows={isExpanded ? 3 : 1}
-        />
-        <Zoom in={isExpanded}>
-          <Fab onClick={submitNote}>
-            <AddIcon />
-          </Fab>
-        </Zoom>
-      </form>
-    </div>
+      <TextInput
+        style={styles.inputContent}
+        onChangeText={onChangeContent}
+        value={NoteContent}
+      />
+
+<View>
+            <MyButton title="Add Note" onPress={submitNote} />
+            <MyButton title="cancel" onPress={props.modaltriggerCancel} />
+          </View>
+  
+  </SafeAreaView>
   );
 }
 
+
+const styles = StyleSheet.create({
+  inputTitle: {
+    
+    margin: 12,
+    borderWidth: 1,
+    padding: 3,
+    height :'20%' 
+  },
+  inputContent: {
+    
+    margin: 12,
+    borderWidth: 1,
+    padding: 3,
+    height :'40%' 
+  },
+  view:{
+    height:'20%',
+    width:'90%'
+  }
+});
 export default CreateArea;

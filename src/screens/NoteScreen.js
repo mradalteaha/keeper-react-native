@@ -1,40 +1,59 @@
 
-import React from 'react'
+import React ,{useState} from 'react'
 import {  SafeAreaView,
     StyleSheet,
     View,
     FlatList,
     Image,Text} from 'react-native'
 import Note  from '../Components/Note';
-
+import CreateArea from '../Components/CreateArea';
+import AddNoteModal from '../Components/AddNoteModal';
 
 
 function NoteScreen () { 
     const title = 'Test Note '
     const content  = 'I am a note component'
 
-    const NotesArray = [{title :'Test Note ' ,content :'I am a note casdasdasdasdasdadomponent'},{title :'Test Note ' ,content :'I am a note cossmponent'},
-    {title :'Test Note ' ,content :'I am aasdas note component'},{title :'Test Note ' ,content :'I am a notasde cossmponent'}
-,{title :'Test Note ' ,content :'I am a asd comssponent'},{title :'Test Note ' ,content :'I am a note comasdponent'}
-,{title :'Test Note ' ,content :'I am a noteasd cssomponent'}
-,{title :'Test Note ' ,content :'I am a note casdaasdasdasdasdadomponent'}]
+    const NotesArray = [{title :'Test Note ' ,content :'I am a note casdasdasdasdasdadomponent'}
+    ,{title :'Test Note ' ,content :'I am a note cossmponent'},
+   ]
+
+
+const [notes, setNotes] = useState(NotesArray);
+
+    function submitNote(newNote){
+
+        setNotes(prevNotes => {
+            return [...prevNotes, newNote];
+          });
+
+    }
+
+    function deleteNote(id) {
+        setNotes(prevNotes => {
+          return prevNotes.filter((noteItem, index) => {
+            return index !== id;
+          });
+        });
+      }
 
     return ( 
         
         <SafeAreaView style={styles.mainPage}>
-        <View style={styles.header}>
-        <Text style={styles.headerTitle}> Keeper </Text>
-        </View>
+  
+
+        <AddNoteModal noteSubmit={submitNote}/>
+
         <SafeAreaView style={{height:'90%',width:'100%',justifyContent: 'center',}}>
         <FlatList 
         style = {{width : '100%' , position : 'relative'}}
-        numColumns={3}
+        numColumns={2}
             keyExtractor={(Note)=>Note.content}
                 showsVerticalScrollIndicator = {false}
                 
-            data={NotesArray}
-            renderItem={({item})=>{
-                return <Note content={item.content} title={item.title} />;
+            data={notes}
+            renderItem={({item ,index})=>{
+                return <Note content={item.content} title={item.title} onDelete={deleteNote} id={index} />;
             }}>
 
             </FlatList>
